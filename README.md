@@ -1,6 +1,7 @@
 
 Add this on your build.gradle file
 
+Latest Relese is [![](https://jitpack.io/v/Suraj8081/FileDownloader.svg)](https://jitpack.io/#Suraj8081/FileDownloader
 
 	allprojects {
 		repositories {
@@ -14,7 +15,7 @@ Add this on your build.gradle file
 	
   	dependencies {
   		...........
-	        implementation 'com.github.Suraj8081:FileDownloader:1.0.1'
+	        implementation 'com.github.Suraj8081:FileDownloader:$version'
 	}
   
   
@@ -30,26 +31,26 @@ Add this on your build.gradle file
 
                 GlobalScope.launch {
                     //when you save file in our internal storage then
-                    fileDownloader.downloadInPublicDir(url,"demo")
+                    fileDownloader.downloadInPublicDir(url,"Demo")
                     
                     //when you save file in our package storage like android directory
-                    fileDownloader.downloadInPrivateDir(this@MainActivity,url,"song")
+                    fileDownloader.downloadInPrivateDir(this@MainActivity,url,"Domo")
                 }
 
                 fileDownloader.initDownloadCallback(object : DownloadListener {
                     override fun isSuccess(success: Boolean) {
                         //get Downalod Status
-                        Log.d(TAG, "isSuccess: "+success)
+                        Log.d(TAG, "isSuccess: $success")
                     }
 
                     override fun isLoading(progress: Long) {
                         //getProgres
-                        Log.d(TAG, "isLoading: "+progress)
+                        Log.d(TAG, "isLoading: $progress")
                     }
 
                     override fun isError(error: String) {
                     //get Downalod Error
-                        Log.d(TAG, "isSuccess: "+error)
+                        Log.d(TAG, "isSuccess: $error")
                     }
 
                 })
