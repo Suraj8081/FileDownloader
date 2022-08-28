@@ -14,7 +14,7 @@ Add this on your build.gradle file
 	
   	dependencies {
   		...........
-	        implementation 'com.github.Suraj8081:FileDownloader:1.0.0'
+	        implementation 'com.github.Suraj8081:FileDownloader:1.0.1'
 	}
   
   
@@ -36,8 +36,7 @@ Add this on your build.gradle file
                     fileDownloader.downloadInPrivateDir(this@MainActivity,url,"song")
                 }
 
-                fileDownloader.initDownloadCallback(object :
-                    com.suraj.filedownloader.DownloadListener {
+                fileDownloader.initDownloadCallback(object : DownloadListener {
                     override fun isSuccess(success: Boolean) {
                         //get Downalod Status
                         Log.d(TAG, "isSuccess: "+success)
