@@ -19,15 +19,14 @@ class MainActivity : AppCompatActivity(){
             if (PermissionUtils.getFileMangePermission(this,101)) {
                 val fileDownloader= FileDownloader();
 
-                fileDownloader.getAllFilePublicDir("demo")
+                //fileDownloader.getAllFilePublicDir("demo")
 
                 GlobalScope.launch {
-                   // fileDownloader.downloadInPublicDir(url,"demo")
-                    //fileDownloader.downloadInPrivateDir(this@MainActivity,url,"song")
+                    //fileDownloader.downloadInPublicDir(url,"demo")
+                    fileDownloader.downloadInPrivateDir(this@MainActivity,url,"song")
                 }
 
-                fileDownloader.initDownloadCallback(object :
-                    com.suraj.filedownloader.DownloadListener {
+                fileDownloader.initDownloadCallback(object : DownloadListener {
                     override fun isSuccess(success: Boolean) {
                         Log.d(TAG, "isSuccess: "+success)
                     }
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity(){
                 })
 
             }else{
-                Toast.makeText(this,"Permission Denie",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Permission Deni",Toast.LENGTH_SHORT).show()
             }
         }
 
