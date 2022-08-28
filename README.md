@@ -20,8 +20,10 @@ Add this on your build.gradle file
   
   Code is
   
-  findViewById<Button>(R.id.btn).setOnClickListener {
+  	findViewById<Button>(R.id.btn).setOnClickListener {
+	
             if (PermissionUtils.getFileMangePermission(this,101)) {
+	    
                 val fileDownloader= FileDownloader();
 
                 fileDownloader.getAllFilePublicDir("demo")
