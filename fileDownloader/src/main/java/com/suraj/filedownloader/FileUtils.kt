@@ -14,32 +14,40 @@ internal object FileUtils {
 
     fun createDir(dirName: String): File {
         val file = File(ROOT_DIR_PUBLIC, dirName)
-        if (!file.exists()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                file.createNewFile()
-            }else
-                file.mkdir()
+        if (!file.exists() && !file.isDirectory) {
+            file.mkdir()
         }
         return file
     }
 
-    fun createDir(context: Context,dirName: String?):File{
-        val file=context.getExternalFilesDir(dirName)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            file!!.createNewFile()
-        }else
-            file!!.mkdir()
+    fun createDir(context: Context, dirName: String?): File {
+        val file = context.getExternalFilesDir(dirName)
+        if (!file!!.exists() && !file.isDirectory) {
+            file.mkdir()
+        }
         return file
     }
 
-    fun getAllFilePublicDir(dirName: String):Array<File>{
+    fun getAllFilePublicDir(dirName: String): Array<File> {
         val file = File(ROOT_DIR_PUBLIC, dirName)
         return file.listFiles() as Array<File>
     }
 
-    fun getAllFilePrivateDir(context: Context,dirName: String):Array<File>{
-        val file=context.getExternalFilesDir(dirName)
+    fun getAllFilePrivateDir(context: Context, dirName: String): Array<File> {
+        val file = context.getExternalFilesDir(dirName)
         return file!!.listFiles() as Array<File>
+    }
+
+    fun createFile(dirName: File, fileName: String,downloadListener: DownloadListener?):  Pair<File,Boolean> {
+        var status=true
+        val file = File(dirName, fileName)
+        if (!file.exists())
+            file.createNewFile()
+        else {
+            status=false
+            downloadListener?.isError("File Already Exist")
+        }
+        return Pair(file,status)
     }
 
 }

@@ -18,8 +18,7 @@ object PermissionUtils {
         var result = false
         if (Build.VERSION.SDK_INT >= 30) {
             if (Environment.isExternalStorageManager()) {
-                //result = getStoragePermission(activity,REQUEST_CODE)
-                result=true;
+                result = getStoragePermission(activity,REQUEST_CODE)
                 // If you don't have access, launch a new activity to show the user the system's dialog
                 // to allow access to the external storage
             } else {

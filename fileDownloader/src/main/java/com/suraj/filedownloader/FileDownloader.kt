@@ -10,29 +10,30 @@ class FileDownloader() {
 
     private var downloadListener: DownloadListener? = null
 
-    fun initDownloadCallback(listener: DownloadListener){
-        this.downloadListener=listener
+    fun initDownloadCallback(listener: DownloadListener) {
+        this.downloadListener = listener
     }
 
     fun downloadInPublicDir(url: String, dirName: String) {
-        val dir=FileUtils.createDir(dirName);
-        downloadFile(url,dir)
-    }
-    fun downloadInPrivateDir(context: Context, url: String, dirName: String) {
-        val dir=FileUtils.createDir(context,dirName);
-        downloadFile(url,dir)
+        val dir = FileUtils.createDir(dirName);
+        downloadFile(url, dir)
     }
 
-    fun getAllFilePublicDir(dirName: String):Array<File>{
+    fun downloadInPrivateDir(context: Context, url: String, dirName: String) {
+        val dir = FileUtils.createDir(context, dirName);
+        downloadFile(url, dir)
+    }
+
+    fun getAllFilePublicDir(dirName: String): Array<File> {
         return FileUtils.getAllFilePublicDir(dirName)
     }
 
-    fun getAllFilePrivateDir(context: Context,dirName: String):Array<File>{
-        return FileUtils.getAllFilePrivateDir(context,dirName)
+    fun getAllFilePrivateDir(context: Context, dirName: String): Array<File> {
+        return FileUtils.getAllFilePrivateDir(context, dirName)
     }
 
 
-    private fun downloadFile(urlString: String,dirName: File) {
+    private fun downloadFile(urlString: String, dirName: File) {
         try {
             var count: Int
             val url = URL(urlString)
@@ -50,32 +51,34 @@ class FileDownloader() {
             )
 
 
-            val fileDir = File(dirName, getFileNameFromURL(urlString))
+            //val fileDir = File(dirName, getFileNameFromURL(urlString))
+            val fileDir = FileUtils.createFile(dirName, getFileNameFromURL(urlString), downloadListener)
+            if (fileDir.second) {
+                val output: OutputStream = FileOutputStream(fileDir.first)
+                val data = ByteArray(1024)
+                var total: Long = 0
+                while ((input.read(data).also { count = it }) != -1) {
+                    total += count.toLong()
+                    // publishing the progress....
+                    downloadListener?.isLoading(((total * 100) / lengthOfFile))
+                    downloadListener?.isSuccess(false)
+                    // writing data to file
+                    output.write(data, 0, count)
 
-            val output: OutputStream = FileOutputStream(fileDir)
-            val data = ByteArray(1024)
-            var total: Long = 0
-            while ((input.read(data).also { count = it }) != -1) {
-                total += count.toLong()
-                // publishing the progress....
-                downloadListener?.isLoading(((total * 100) / lengthOfFile))
-                downloadListener?.isSuccess(false)
-                // writing data to file
-                output.write(data, 0, count)
+                    if (total == lengthOfFile.toLong()) {
+                        downloadListener?.isSuccess(true)
+                    }
 
-                if (total == lengthOfFile.toLong()) {
-                    downloadListener?.isSuccess(true)
                 }
+                // flushing output
+                output.flush()
 
+                // closing streams
+                output.close()
             }
-
-            // flushing output
-            output.flush()
-
-            // closing streams
-            output.close()
             input.close()
-        }catch (exception:Exception){
+
+        } catch (exception: Exception) {
             downloadListener?.isError(exception.message.toString())
         }
 
