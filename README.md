@@ -1,17 +1,24 @@
 
 Add this on your build.gradle file
-allprojects {
+
+
+	allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
 	}
   
-  add this dependency
-  dependencies {
+  	add this dependency
+	
+	
+  	dependencies {
+  		...........
 	        implementation 'com.github.Suraj8081:FileDownloader:1.0.0'
 	}
   
+  
+  Code is
   
   findViewById<Button>(R.id.btn).setOnClickListener {
             if (PermissionUtils.getFileMangePermission(this,101)) {
